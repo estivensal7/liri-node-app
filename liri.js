@@ -37,8 +37,6 @@ function myTweets(error, response, body) {
 	})	
 }
 
-// myTweets();
-
 const spotify = new Spotify(keys.spotify);
 
 function searchSpotify() {
@@ -65,13 +63,10 @@ function searchSpotify() {
 			console.log("\n ALBUM NAME: " + tracks[i].album.name);
 			console.log("\n SONG NAME: " + tracks[i].name);
 			console.log("\n PREVIEW LINK: " + tracks[i].preview_url);
-			
 		}
 	})
 
 }
-
-// searchSpotify();
 
 function movieThis() {
 
@@ -90,8 +85,6 @@ function movieThis() {
 
 		let movieObject = JSON.parse(body);
 
-		console.log(movieObject);
-
 		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~MOVIE SEARCH RESULTS~~~~~~~~~~~~~~~~~~~~~~~~~");
 		console.log('\n TITLE: ' + movieObject.Title);
 		console.log('\n YEAR RELEASED: ' + movieObject.Year);
@@ -104,49 +97,69 @@ function movieThis() {
 	})
 }
 
-// movieThis();
-
-
 function doWhatItSays() {
 
-	fs.readFile("random.txt", "UTF-8", (error, data) => {
+	fs.readFile("random.txt", "utf8", (error, data) => {
 
 		if (error) {
 			console.log(error);
 			return;
 		}
 
-		loggedData = data.split(', ');
-		console.log(loggedData);
+		loggedData = data.split(",");
+		// console.log(loggedData);
 
-		let command;
-		let params;
+		argument = loggedData[0];
+		userInput = loggedData[1];
 
-		command = loggedData[2];
-		params = loggedData[3];
-
-		// params = params.replace('"', '');
-
-		switch(command) {
+		switch(argument) {
 
 			case 'my-tweets':
-				userInput = params;
 				myTweets();
 				break;
 
 			case 'spotify-this-song':
-				userInput = params;
-				searchSpotify();
+				searchSpotify(userInput);
 				break;
 
 			case 'search-movie':
-				userInput = params;
-				movieThis();
+				movieThis(userInput);
 				break;
+				default:
+					console.log("File has no valid requests.")
 		}
 
 	})
 
-	doWhatItSays();
+// const logSearchData =  => {
+
+// 	fs.appendFile("log.txt", response, (error) => {
+// 		if (error) {
+// 			console.log(error);
+// 			return;
+// 		}		
+// 	})
+// }
 
 }
+
+		switch(argument) {
+
+			case 'my-tweets':
+				myTweets();
+				break;
+
+			case 'spotify-this-song':
+				searchSpotify(userInput);
+				break;
+
+			case 'search-movie':
+				movieThis(userInput);
+				break;
+
+			case 'do-what-it-says':
+				doWhatItSays();
+				break;
+				default:
+					console.log("LIRI does not recognize this request. Please type 'my-tweets', 'spotify-this-song', 'search-movie', or 'do-what-it-says' followed by a search query.");
+		}
